@@ -23,10 +23,10 @@ body {
   direction: ltr;
 }
 
-/* Tamil Typography Optimizations (Mallikai Font) */
+/* Tamil Typography & Multi-Script Support (Unicode Tamil + Luxury English Pairing) */
 html[lang="ta"], body.lang-ta, .lang-ta,
 .lang-ta button, .lang-ta input, .lang-ta select, .lang-ta textarea, .lang-ta p, .lang-ta span, .lang-ta a, .lang-ta li {
-  font-family: var(--font-body-ta) !important;
+  font-family: var(--font-body-ta);
   line-height: 1.75; /* Tamil vowels & conjuncts require comfortable line-height */
   letter-spacing: 0.01em;
 }
@@ -36,7 +36,7 @@ html[lang="ta"] h4, html[lang="ta"] h5, html[lang="ta"] h6,
 .lang-ta h1, .lang-ta h2, .lang-ta h3, .lang-ta h4, .lang-ta h5, .lang-ta h6,
 .lang-ta .hero-title, .lang-ta .section-title, .lang-ta .brand-name,
 .lang-ta .product-name, .lang-ta .category-title, .lang-ta .trust-title {
-  font-family: var(--font-heading-ta) !important;
+  font-family: var(--font-heading-ta);
   line-height: 1.45;
   letter-spacing: 0;
 }

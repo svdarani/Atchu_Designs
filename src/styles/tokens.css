@@ -1,14 +1,4 @@
 @font-face {
-  font-family: 'Mallikai';
-  src: url('/fonts/Mallikai.ttf') format('truetype'),
-       local('Mallikai'),
-       local('Mallikai Regular');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'Canela';
   src: local('Canela Bold'), local('Canela-Bold'), local('Canela'), local('Canela Regular');
   font-weight: 400 900;
@@ -64,8 +54,8 @@
   --font-serif-en: 'Canela', 'Bodoni Moda', 'Libre Bodoni', Georgia, serif;
   --font-body-en: 'Avenir', 'Avenir Next', 'Open Sans', system-ui, -apple-system, sans-serif;
   
-  --font-heading-ta: 'Mallikai', 'Anek Tamil', 'Pavanam', 'Mukta Malar', 'Catamaran', 'Noto Sans Tamil', sans-serif;
-  --font-body-ta: 'Mallikai', 'Anek Tamil', 'Pavanam', 'Mukta Malar', 'Catamaran', 'Noto Sans Tamil', sans-serif;
+  --font-heading-ta: var(--font-heading-en), 'Anek Tamil', 'Noto Serif Tamil', 'Pavanam', 'Mukta Malar', 'Catamaran', 'Noto Sans Tamil', serif;
+  --font-body-ta: var(--font-body-en), 'Anek Tamil', 'Pavanam', 'Mukta Malar', 'Catamaran', 'Noto Sans Tamil', sans-serif;
 
   /* Elevation Shadows */
   --shadow-xs: 0 1px 2px rgba(32, 26, 24, 0.04);
