@@ -112,3 +112,16 @@
   --font-body-en: 'Open Sans', 'Avenir', system-ui, -apple-system, sans-serif;
 }
 
+/* Dark Theme Tokens */
+[data-theme="dark"] {
+  --color-bg: #140C0E;
+  --color-surface: #1E1215;
+  --color-surface-elevated: #281B1F;
+  --color-surface-subtle: #2A1C20;
+  --color-text-main: #F5EEEA;
+  --color-text-muted: #BCADA5;
+  --color-text-light: #8E7E76;
+  --color-border: #3A262C;
+  --color-border-subtle: #2C1C21;
+}
+

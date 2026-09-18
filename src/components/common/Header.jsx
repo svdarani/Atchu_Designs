@@ -12,17 +12,32 @@ import {
   X,
   Phone,
   ShieldCheck,
-  UserCheck,
-  Type
+  Moon,
+  Sun,
+  ArrowRight
 } from 'lucide-react';
 
 export default function Header({ currentView, setCurrentView }) {
-  const { t, isTamil, englishFontPair, toggleEnglishFontPair } = useLanguage();
+  const { t, isTamil } = useLanguage();
   const { cartItemCount, wishlist, setIsCartOpen, searchQuery, setSearchQuery } = useShop();
   const { isAdmin, switchRole } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // Theme Mode (Light by default, can toggle to luxury Dark)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('atchu_theme') || 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('atchu_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,9 +51,7 @@ export default function Header({ currentView, setCurrentView }) {
     { id: 'home', label: t('nav.home') },
     { id: 'shop', label: t('nav.shop') },
     { id: 'bridal', label: t('nav.bridal') },
-    { id: 'aari', label: t('nav.aari') },
     { id: 'custom-quote', label: t('nav.customOrder') },
-    { id: 'track-order', label: t('nav.trackOrder') },
     { id: 'about', label: t('nav.about') },
     { id: 'contact', label: t('nav.contact') }
   ];
@@ -51,168 +64,161 @@ export default function Header({ currentView, setCurrentView }) {
 
   return (
     <>
-      {/* Top Announcement Bar */}
+      {/* Top Boutique Announcement Bar */}
       <div className="announcement-bar">
         <div className="announcement-inner">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>{t('announcement.text')}</span>
           </div>
-          <a
-            href={BUSINESS_CONFIG.telLink}
-            className="announcement-contact"
-            title="Call Atchu Designs"
-          >
-            <Phone size={13} />
-            <span>{BUSINESS_CONFIG.phone}</span>
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <a
+              href={BUSINESS_CONFIG.telLink}
+              className="announcement-contact"
+              title="Call Atchu Designs"
+            >
+              <Phone size={13} />
+              <span>{BUSINESS_CONFIG.phone}</span>
+            </a>
+
+            {/* Admin Studio Toggle */}
+            <button
+              className="announcement-role-btn"
+              onClick={() => {
+                if (isAdmin) {
+                  switchRole('customer');
+                  setCurrentView('home');
+                } else {
+                  switchRole('admin');
+                  setCurrentView('admin');
+                }
+              }}
+              title="Switch to Tailor Studio or Customer Boutique"
+            >
+              <ShieldCheck size={13} />
+              <span>
+                {isAdmin
+                  ? (isTamil ? 'நிர்வாகம் (Admin)' : 'Admin Mode')
+                  : (isTamil ? 'டெய்லர் நிர்வாகம்' : 'Tailor Studio')}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Main Sticky Header */}
-      <header className={`site-header ${isScrolled ? 'scrolled' : ''}`}>
-        <div className="container">
-          <div className="header-inner">
-            {/* Left: Brand Logo */}
+      {/* Floating 3-Island Header (Segmented Navigation Bar) */}
+      <header className={`site-header-floating ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="header-islands-row">
+          {/* Island 1 (Left): Brand Logo + Circular Theme Toggle Button */}
+          <div className="header-island header-island-left">
             <div
-              className="brand-logo"
+              className="island-logo-wrap"
               onClick={() => handleNavClick('home')}
-              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
               title="Atchu Designs - Stiching and Aari works"
             >
               <img
                 src={BUSINESS_CONFIG.logoUrl}
                 alt="Atchu Designs - Stiching and Aari works"
-                style={{
-                  height: '46px',
-                  width: 'auto',
-                  maxWidth: '185px',
-                  objectFit: 'contain',
-                  display: 'block'
-                }}
+                className="island-logo-img"
               />
             </div>
 
-            {/* Center: Desktop Navigation Links */}
-            <nav className="desktop-nav" aria-label="Main Navigation">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`nav-link ${currentView === item.id ? 'active' : ''}`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-
-            {/* Right: Actions, Language Switcher, Admin Toggle, Cart */}
-            <div className="header-actions">
-              {/* Search Toggle */}
-              <button
-                className="action-icon-btn"
-                onClick={() => setSearchOpen(!searchOpen)}
-                title={t('nav.searchPlaceholder')}
-                aria-label="Search"
-              >
-                <Search size={19} />
-              </button>
-
-              {/* Language Switcher Button */}
-              <LanguageSwitcher />
-
-              {/* English Font Pairing Toggle */}
-              {!isTamil && (
-                <button
-                  onClick={toggleEnglishFontPair}
-                  className="role-toggle-pill"
-                  title="Toggle between Canela Bold + Avenir & Bodoni + Open Sans"
-                  style={{
-                    fontSize: '0.74rem',
-                    padding: '5px 11px',
-                    background: 'var(--color-surface-subtle)',
-                    border: '1px solid var(--color-border)'
-                  }}
-                >
-                  <Type size={13} color="var(--color-gold-dark)" />
-                  <span>{englishFontPair === 'canela-avenir' ? 'Canela + Avenir' : 'Bodoni + Open Sans'}</span>
-                </button>
-              )}
-
-              {/* Wishlist */}
-              <button
-                className="action-icon-btn"
-                onClick={() => handleNavClick('wishlist')}
-                title={t('nav.wishlist')}
-                aria-label="Wishlist"
-              >
-                <Heart size={20} color={wishlist.length > 0 ? 'var(--color-primary)' : 'currentColor'} />
-                {wishlist.length > 0 && <span className="action-badge">{wishlist.length}</span>}
-              </button>
-
-              {/* Cart Button */}
-              <button
-                className="action-icon-btn"
-                onClick={() => setIsCartOpen(true)}
-                title={t('nav.cart')}
-                aria-label="Cart"
-                style={{ background: 'var(--color-gold-subtle)' }}
-              >
-                <ShoppingBag size={20} color="var(--color-primary-dark)" />
-                {cartItemCount > 0 && <span className="action-badge">{cartItemCount}</span>}
-              </button>
-
-              {/* Role Switcher Pill: Customer vs Boutique Owner Studio */}
-              <button
-                className={`role-toggle-pill ${isAdmin ? 'admin-active' : ''}`}
-                onClick={() => {
-                  if (isAdmin) {
-                    switchRole('customer');
-                    setCurrentView('home');
-                  } else {
-                    switchRole('admin');
-                    setCurrentView('admin');
-                  }
-                }}
-                title="Switch between Customer Boutique and Tailor Admin Studio"
-              >
-                {isAdmin ? (
-                  <>
-                    <ShieldCheck size={14} />
-                    <span>{isTamil ? 'நிர்வாகம்' : 'Admin'}</span>
-                  </>
-                ) : (
-                  <>
-                    <UserCheck size={14} />
-                    <span>{isTamil ? 'உரிமையாளர்' : 'Tailor Studio'}</span>
-                  </>
-                )}
-              </button>
-
-              {/* Mobile Menu Toggle Button */}
-              <button
-                className="action-icon-btn mobile-only"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle Menu"
-                style={{ display: 'none' }}
-              >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            </div>
+            {/* Circular Theme Toggle Button (Moon in light mode, Sun in dark mode) */}
+            <button
+              className="island-circle-btn theme-toggle-btn"
+              onClick={toggleTheme}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
           </div>
 
-          {/* Collapsible Search Input Bar */}
-          {searchOpen && (
-            <div
-              style={{
-                padding: '12px 0',
-                borderTop: '1px solid var(--color-border)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px'
-              }}
-              className="animate-fade-in"
+          {/* Island 2 (Center): Navigation Capsule with Active Pill Highlight */}
+          <nav className="header-island header-island-center" aria-label="Main Navigation">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`island-nav-link ${currentView === item.id ? 'active' : ''}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Island 3 (Right): Utilities & Start Your Project CTA */}
+          <div className="header-island header-island-right">
+            {/* Search Toggle */}
+            <button
+              className="island-circle-btn"
+              onClick={() => setSearchOpen(!searchOpen)}
+              title={t('nav.searchPlaceholder')}
+              aria-label="Search"
             >
-              <Search size={18} color="var(--color-gold-dark)" />
+              <Search size={15} />
+            </button>
+
+            {/* Language Switcher Pill */}
+            <LanguageSwitcher />
+
+            {/* Wishlist */}
+            <button
+              className="island-circle-btn"
+              onClick={() => handleNavClick('wishlist')}
+              title={t('nav.wishlist')}
+              aria-label="Wishlist"
+            >
+              <Heart size={15} color={wishlist.length > 0 ? 'var(--color-primary)' : 'currentColor'} />
+              {wishlist.length > 0 && <span className="island-badge">{wishlist.length}</span>}
+            </button>
+
+            {/* Cart Button with Count Badge */}
+            <button
+              className="island-circle-btn"
+              onClick={() => setIsCartOpen(true)}
+              title={t('nav.cart')}
+              aria-label="Shopping Bag"
+            >
+              <ShoppingBag size={15} color="var(--color-primary-dark)" />
+              {cartItemCount > 0 && <span className="island-badge">{cartItemCount}</span>}
+            </button>
+
+            {/* Subtle Divider */}
+            <div className="island-divider" />
+
+            {/* Start Your Project Button (Matches screenshot's dynamic CTA) */}
+            <button
+              className="start-project-btn"
+              onClick={() => handleNavClick('custom-quote')}
+              title={isTamil ? "விருப்ப ஆர்டர் தொடங்க" : "Start Your Project"}
+            >
+              <div className="sp-badge">
+                <div className="sp-top-line">
+                  <span className="sp-word-start">{isTamil ? 'ஆர்டர்' : 'Start'}</span>
+                  {!isTamil && <span className="sp-your">Your</span>}
+                </div>
+                <div className="sp-bottom-line">{isTamil ? 'தொடங்க' : 'Project'}</div>
+              </div>
+              <ArrowRight size={17} className="sp-arrow" />
+            </button>
+
+            {/* Mobile Menu Toggle (Visible on smaller viewports) */}
+            <button
+              className="island-circle-btn mobile-only-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle Menu"
+              style={{ display: 'none' }}
+            >
+              {mobileMenuOpen ? <X size={17} /> : <Menu size={17} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Floating Dropdown Search Bar */}
+        {searchOpen && (
+          <div className="floating-search-wrap animate-fade-in">
+            <div className="floating-search-pill">
+              <Search size={17} color="var(--color-gold-dark)" />
               <input
                 type="text"
                 value={searchQuery}
@@ -221,29 +227,30 @@ export default function Header({ currentView, setCurrentView }) {
                   if (currentView !== 'shop') setCurrentView('shop');
                 }}
                 placeholder={t('nav.searchPlaceholder')}
-                className="input-styled"
+                className="floating-search-input"
                 autoFocus
-                style={{ flexGrow: 1 }}
               />
               <button
-                className="btn btn-sm btn-outline"
+                className="floating-search-close"
                 onClick={() => setSearchOpen(false)}
+                aria-label="Close search"
               >
-                {t('common.close')}
+                ✕
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </header>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu Modal */}
       {mobileMenuOpen && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 99,
-            background: 'rgba(32, 26, 24, 0.6)',
+            zIndex: 1100,
+            background: 'rgba(20, 10, 14, 0.65)',
+            backdropFilter: 'blur(8px)',
             display: 'flex',
             justifyContent: 'flex-start'
           }}
@@ -251,10 +258,10 @@ export default function Header({ currentView, setCurrentView }) {
         >
           <div
             style={{
-              width: '82%',
+              width: '85%',
               maxWidth: '320px',
               height: '100%',
-              background: '#FFFFFF',
+              background: 'var(--color-surface)',
               padding: 'var(--space-24)',
               display: 'flex',
               flexDirection: 'column',
@@ -264,56 +271,43 @@ export default function Header({ currentView, setCurrentView }) {
             onClick={(e) => e.stopPropagation()}
             className="animate-fade-in"
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div
-                className="brand-logo"
-                onClick={() => handleNavClick('home')}
-                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                title="Atchu Designs - Stiching and Aari works"
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid var(--color-border)' }}>
+              <img
+                src={BUSINESS_CONFIG.logoUrl}
+                alt="Atchu Designs"
+                style={{ height: '34px', width: 'auto', objectFit: 'contain' }}
+              />
+              <button
+                className="island-circle-btn"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
               >
-                <img
-                  src={BUSINESS_CONFIG.logoUrl}
-                  alt="Atchu Designs - Stiching and Aari works"
-                  style={{
-                    height: '38px',
-                    width: 'auto',
-                    maxWidth: '145px',
-                    objectFit: 'contain',
-                    display: 'block'
-                  }}
-                />
-              </div>
-              <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
-                <X size={20} />
+                <X size={16} />
               </button>
             </div>
 
-            <div style={{ padding: '8px 0', borderBottom: '1px solid var(--color-border)', display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <div style={{ padding: '4px 0', display: 'flex', gap: '8px', alignItems: 'center' }}>
               <LanguageSwitcher />
-              {!isTamil && (
-                <button
-                  onClick={toggleEnglishFontPair}
-                  className="role-toggle-pill"
-                  style={{ fontSize: '0.74rem', padding: '5px 10px', background: 'var(--color-surface-subtle)' }}
-                >
-                  <Type size={13} color="var(--color-gold-dark)" />
-                  <span>{englishFontPair === 'canela-avenir' ? 'Canela + Avenir' : 'Bodoni + Open Sans'}</span>
-                </button>
-              )}
+              <button
+                className="island-circle-btn"
+                onClick={toggleTheme}
+                title="Toggle Theme"
+              >
+                {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
             </div>
 
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
+                  className={`island-nav-link ${currentView === item.id ? 'active' : ''}`}
                   style={{
                     textAlign: 'left',
-                    padding: '10px 0',
+                    padding: '12px 16px',
                     fontSize: '1rem',
-                    fontWeight: currentView === item.id ? 700 : 500,
-                    color: currentView === item.id ? 'var(--color-primary)' : 'var(--color-text-main)',
-                    borderBottom: '1px solid var(--color-border-subtle)'
+                    width: '100%'
                   }}
                 >
                   {item.label}
@@ -321,17 +315,28 @@ export default function Header({ currentView, setCurrentView }) {
               ))}
             </nav>
 
-            <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--color-border)' }}>
+            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '16px', borderTop: '1px solid var(--color-border)' }}>
               <button
                 className="btn btn-primary"
-                style={{ width: '100%' }}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                onClick={() => handleNavClick('custom-quote')}
+              >
+                <span>{isTamil ? 'விருப்ப ஆர்டர் தொடங்க' : 'Start Your Project'}</span>
+                <ArrowRight size={16} />
+              </button>
+
+              <button
+                className="btn btn-outline"
+                style={{ width: '100%', fontSize: '0.84rem' }}
                 onClick={() => {
                   switchRole(isAdmin ? 'customer' : 'admin');
                   setCurrentView(isAdmin ? 'home' : 'admin');
                   setMobileMenuOpen(false);
                 }}
               >
-                {isAdmin ? (isTamil ? 'வாடிக்கையாளர் பக்கம்' : 'Customer Boutique') : (isTamil ? 'டெய்லர் நிர்வாகி பக்கம்' : 'Tailor Admin Studio')}
+                {isAdmin
+                  ? (isTamil ? 'வாடிக்கையாளர் பக்கம்' : 'Customer Boutique')
+                  : (isTamil ? 'டெய்லர் நிர்வாகி பக்கம்' : 'Tailor Admin Studio')}
               </button>
             </div>
           </div>

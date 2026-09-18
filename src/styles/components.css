@@ -32,145 +32,270 @@
   color: #FFFFFF;
 }
 
-/* --- Header & Navigation --- */
-.site-header {
+/* --- Floating 3-Island Header (Segmented Floating Nav) --- */
+.site-header-floating {
   position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-border);
-  transition: box-shadow var(--transition-normal);
+  top: 14px;
+  z-index: 1000;
+  width: 100%;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  margin-bottom: 8px;
 }
 
-.site-header.scrolled {
-  box-shadow: 0 4px 20px rgba(74, 14, 23, 0.08);
-}
-
-.header-inner {
+.header-islands-row {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 76px;
+  gap: 14px;
+  pointer-events: auto;
 }
 
-/* Brand Logo */
-.brand-logo {
+/* Island Capsule Common Styles */
+.header-island {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(32, 26, 24, 0.07);
   display: flex;
   align-items: center;
-  gap: 12px;
+  pointer-events: auto;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.brand-emblem {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+.header-island:hover {
+  box-shadow: 0 6px 24px rgba(32, 26, 24, 0.11);
+}
+
+.site-header-floating.scrolled .header-island {
+  box-shadow: 0 8px 30px rgba(32, 26, 24, 0.14);
+  background: #FFFFFF;
+}
+
+/* Island 1: Left Brand Pill */
+.header-island-left {
+  padding: 6px 14px 6px 18px;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.island-logo-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--color-gold);
-  border: 1px solid var(--color-gold);
-  box-shadow: 0 3px 8px rgba(74, 14, 23, 0.25);
+  cursor: pointer;
 }
 
-.brand-text-col {
-  display: flex;
-  flex-direction: column;
+.island-logo-img {
+  height: 35px;
+  width: auto;
+  max-width: 145px;
+  object-fit: contain;
+  display: block;
 }
 
-.brand-name {
-  font-family: var(--font-heading-en);
-  font-size: 1.45rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--color-primary-dark);
-  line-height: 1.1;
-}
-
-.brand-tagline {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-gold-dark);
-  font-weight: 500;
-}
-
-/* Desktop Nav Links */
-.desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: var(--space-24);
-}
-
-.nav-link {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--color-text-main);
-  position: relative;
-  padding: 6px 0;
-  transition: color var(--transition-fast);
-}
-
-.nav-link:hover, .nav-link.active {
-  color: var(--color-primary);
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--color-gold);
-  transition: width var(--transition-normal);
-}
-
-.nav-link:hover::after, .nav-link.active::after {
-  width: 100%;
-}
-
-/* Header Actions */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-}
-
-.action-icon-btn {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
+.island-circle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #E5DFD7;
+  background: #FAF7F2;
+  color: #38322E;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-main);
-  transition: all var(--transition-fast);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  flex-shrink: 0;
 }
 
-.action-icon-btn:hover {
-  background: var(--color-primary-subtle);
+.island-circle-btn:hover {
+  background: #FFFFFF;
+  border-color: var(--color-gold);
   color: var(--color-primary);
+  transform: scale(1.05);
 }
 
-.action-badge {
+.island-badge {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: -3px;
+  right: -3px;
   background: var(--color-primary);
   color: #FFFFFF;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid #FFFFFF;
+}
+
+/* Island 2: Center Navigation Pill */
+.header-island-center {
+  padding: 5px 8px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.island-nav-link {
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #4A4A4A;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.island-nav-link:hover {
+  color: #111111;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.island-nav-link.active {
+  background: #ECE5DC; /* Warm stone capsule matching screenshot */
+  color: #181818;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Island 3: Right CTA Pill */
+.header-island-right {
+  padding: 6px 12px 6px 14px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.island-divider {
+  width: 1px;
+  height: 22px;
+  background: #E5DFD7;
+  margin: 0 2px;
+}
+
+/* Start Your Project CTA Button */
+.start-project-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  color: #121212;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.start-project-btn:hover {
+  color: var(--color-primary);
+}
+
+.start-project-btn:hover .sp-arrow {
+  transform: translateX(4px);
+}
+
+.sp-badge {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.sp-top-line {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.sp-your {
+  font-size: 0.64rem;
+  font-weight: 700;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.sp-bottom-line {
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-family: var(--font-heading-en), system-ui, sans-serif;
+}
+
+.sp-arrow {
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Floating Search Bar */
+.floating-search-wrap {
+  max-width: 600px;
+  margin: 10px auto 0;
+  padding: 0 20px;
+  pointer-events: auto;
+}
+
+.floating-search-pill {
+  background: #FFFFFF;
+  border-radius: 9999px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.floating-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex-grow: 1;
+  font-size: 0.92rem;
+  color: var(--color-text-main);
+}
+
+.floating-search-close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 4px;
+}
+
+/* Announcement Bar Enhancements */
+.announcement-role-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(197, 160, 89, 0.4);
+  color: var(--color-gold-light);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 0.74rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.announcement-role-btn:hover {
+  background: rgba(197, 160, 89, 0.25);
+  color: #FFFFFF;
 }
 
 /* --- Language Switcher --- */
@@ -180,9 +305,9 @@
   gap: 6px;
   padding: 6px 12px;
   border-radius: var(--radius-pill);
-  background: var(--color-surface-subtle);
-  border: 1px solid var(--color-border);
-  font-size: 0.82rem;
+  background: #FAF7F2;
+  border: 1px solid #E5DFD7;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--color-text-main);
   transition: all var(--transition-fast);
@@ -190,7 +315,7 @@
 
 .lang-switcher-btn:hover {
   border-color: var(--color-gold);
-  background: var(--color-gold-subtle);
+  background: #FFFFFF;
   color: var(--color-primary-dark);
 }
 
@@ -222,6 +347,67 @@
   background: var(--color-primary);
   color: #FFFFFF;
   border-color: var(--color-primary);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .header-island {
+  background: rgba(28, 20, 22, 0.92);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .site-header-floating.scrolled .header-island {
+  background: rgba(32, 22, 25, 0.98);
+}
+
+[data-theme="dark"] .island-nav-link {
+  color: #C2B6AE;
+}
+
+[data-theme="dark"] .island-nav-link:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .island-nav-link.active {
+  background: #3B2A2F;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .island-circle-btn {
+  background: #251B1D;
+  border-color: #423035;
+  color: #E2D7CF;
+}
+
+[data-theme="dark"] .island-circle-btn:hover {
+  background: #332427;
+  color: var(--color-gold-light);
+  border-color: var(--color-gold);
+}
+
+[data-theme="dark"] .start-project-btn {
+  color: #F8F1EB;
+}
+
+[data-theme="dark"] .island-divider {
+  background: #423035;
+}
+
+[data-theme="dark"] .floating-search-pill {
+  background: #201518;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #F8F1EB;
+}
+
+[data-theme="dark"] .floating-search-input {
+  color: #F8F1EB;
+}
+
+[data-theme="dark"] .lang-switcher-btn {
+  background: #251B1D;
+  border-color: #423035;
+  color: #E2D7CF;
 }
 
 /* --- Hero Section --- */
@@ -828,6 +1014,16 @@
 
 /* --- Responsive Media Queries --- */
 @media (max-width: 1024px) {
+  .header-island-center {
+    display: none !important;
+  }
+  .header-island-right .start-project-btn,
+  .header-island-right .island-divider {
+    display: none !important;
+  }
+  .header-island-right .mobile-only-toggle {
+    display: flex !important;
+  }
   .trust-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -840,6 +1036,19 @@
 }
 
 @media (max-width: 768px) {
+  .site-header-floating {
+    top: 8px;
+  }
+  .header-islands-row {
+    padding: 0 12px;
+  }
+  .header-island-left {
+    padding: 5px 12px;
+    gap: 10px;
+  }
+  .island-logo-img {
+    height: 28px;
+  }
   .header-inner {
     height: 64px;
   }
