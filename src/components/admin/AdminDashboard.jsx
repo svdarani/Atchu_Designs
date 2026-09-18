@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useShop } from '../../context/ShopContext';
 import { useOrders, ORDER_STAGES } from '../../context/OrderContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import AdminOfflineOrderModal from './AdminOfflineOrderModal';
 import AdminProductModal from './AdminProductModal';
 import AdminQuoteModal from './AdminQuoteModal';
@@ -18,7 +19,11 @@ import {
   ExternalLink,
   ChevronRight,
   TrendingUp,
-  Sliders
+  Sliders,
+  Phone,
+  Mail,
+  MapPin,
+  Award
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -56,12 +61,21 @@ export default function AdminDashboard() {
       <div className="container">
         {/* Admin Header */}
         <div className="admin-header-row">
-          <div className="admin-title-group">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="badge badge-gold">{isTamil ? 'உரிமையாளர் ஸ்டுடியோ' : 'Owner Atelier'}</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>v2.4 Live Store</span>
+          <div className="admin-title-group" style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <div style={{ background: '#FFFFFF', padding: '6px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border-gold)' }}>
+              <img
+                src={BUSINESS_CONFIG.logoUrl}
+                alt="Atchu Designs"
+                style={{ height: '40px', width: 'auto', maxWidth: '160px', objectFit: 'contain', display: 'block' }}
+              />
             </div>
-            <h1>{t('admin.title')}</h1>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="badge badge-gold">{isTamil ? 'உரிமையாளர் ஸ்டுடியோ' : 'Owner Atelier'}</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{BUSINESS_CONFIG.businessSubtitle}</span>
+              </div>
+              <h1 style={{ fontSize: '1.6rem', margin: '4px 0 0' }}>{t('admin.title')}</h1>
+            </div>
           </div>
 
           <div className="admin-actions-bar">
@@ -148,6 +162,12 @@ export default function AdminDashboard() {
             className={`admin-tab-btn ${activeTab === 'measurements' ? 'active' : ''}`}
           >
             {t('admin.tabs.measurements')}
+          </button>
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`admin-tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
+          >
+            {isTamil ? 'அமைப்புகள் & முகவரி' : 'Business Settings'}
           </button>
         </div>
 
@@ -490,6 +510,123 @@ export default function AdminDashboard() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: Business Profile & Centralized Settings */}
+        {activeTab === 'settings' && (
+          <div className="admin-card-surface" style={{ padding: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <h2 style={{ fontSize: '1.4rem', color: 'var(--color-primary-dark)' }}>
+                  {isTamil ? 'மையப்படுத்தப்பட்ட வணிக விவரங்கள்' : 'Centralized Business Configuration'}
+                </h2>
+                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                  {isTamil ? 'வலைத்தளத்தின் அனைத்துப் பக்கங்களிலும் பயன்படுத்தப்படும் அதிகாரப்பூர்வ தொடர்பு மற்றும் பிராண்டிங் விவரங்கள்.' : 'Global branding, contact, WhatsApp, and location parameters for Atchu Designs.'}
+                </p>
+              </div>
+              <div style={{ background: '#FFFFFF', padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border-gold)' }}>
+                <img
+                  src={BUSINESS_CONFIG.logoUrl}
+                  alt="Atchu Designs"
+                  style={{ height: '36px', width: 'auto', objectFit: 'contain' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+              {/* Company Info */}
+              <div style={{ background: 'var(--color-bg)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
+                <h4 style={{ color: 'var(--color-primary-dark)', marginBottom: '14px', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Award size={18} color="var(--color-gold-dark)" />
+                  <span>Company Identity</span>
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Company Name:</span>
+                    <strong>{BUSINESS_CONFIG.businessName}</strong>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Subtitle / Tagline:</span>
+                    <strong style={{ color: 'var(--color-primary)' }}>{BUSINESS_CONFIG.businessSubtitle}</strong>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Experience:</span>
+                    <strong>{BUSINESS_CONFIG.experience} ({BUSINESS_CONFIG.experienceBadge})</strong>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Boutique UPI ID:</span>
+                    <code>{BUSINESS_CONFIG.upiId}</code>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact & WhatsApp */}
+              <div style={{ background: 'var(--color-bg)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
+                <h4 style={{ color: 'var(--color-primary-dark)', marginBottom: '14px', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Phone size={18} color="var(--color-gold-dark)" />
+                  <span>Contact & Direct WhatsApp</span>
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Phone Number:</span>
+                    <a href={BUSINESS_CONFIG.telLink} style={{ color: 'var(--color-primary)', fontWeight: 600 }}>
+                      {BUSINESS_CONFIG.phone}
+                    </a>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>WhatsApp Direct Number:</span>
+                    <a
+                      href={BUSINESS_CONFIG.getWhatsAppUrl('Hi Atchu Designs, testing WhatsApp connection from Admin.')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#1E6B42', fontWeight: 600 }}
+                    >
+                      {BUSINESS_CONFIG.whatsappFormatted} (wa.me/{BUSINESS_CONFIG.whatsapp})
+                    </a>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Official Business Email:</span>
+                    <a href={BUSINESS_CONFIG.emailLink} style={{ color: 'var(--color-primary)', fontWeight: 600, wordBreak: 'break-all' }}>
+                      {BUSINESS_CONFIG.email}
+                    </a>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Instagram Profile:</span>
+                    <a
+                      href={BUSINESS_CONFIG.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'var(--color-gold-dark)', fontWeight: 600 }}
+                    >
+                      {BUSINESS_CONFIG.instagramHandle}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Physical Location */}
+              <div style={{ background: 'var(--color-bg)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
+                <h4 style={{ color: 'var(--color-primary-dark)', marginBottom: '14px', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <MapPin size={18} color="var(--color-gold-dark)" />
+                  <span>Atelier Physical Location</span>
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Full Address:</span>
+                    <p style={{ margin: '4px 0 0', lineHeight: 1.5, fontWeight: 500 }}>
+                      {BUSINESS_CONFIG.address}
+                    </p>
+                  </div>
+                  <div>
+                    <span style={{ color: 'var(--color-text-muted)', display: 'block', fontSize: '0.78rem' }}>Operating Hours:</span>
+                    <p style={{ margin: '4px 0 0', fontSize: '0.84rem' }}>
+                      {BUSINESS_CONFIG.openingHours_en}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useOrders } from '../../context/OrderContext';
-import { Search, CheckCircle, Clock, Package, MessageCircle, AlertCircle } from 'lucide-react';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
+import { Search, CheckCircle, MessageCircle, AlertCircle } from 'lucide-react';
 
 export default function OrderTracker({ initialOrderId = '' }) {
   const { t, isTamil } = useLanguage();
@@ -138,11 +139,7 @@ export default function OrderTracker({ initialOrderId = '' }) {
                 )}
               </div>
               <a
-                href={`https://wa.me/919876543210?text=${encodeURIComponent(
-                  isTamil
-                    ? `வணக்கம், என் பிளவுஸ் ஆர்டர் ${currentOrder.id} இன் நிலையைத் தெரிந்துகொள்ள விரும்புகிறேன்.`
-                    : `Hello, I would like an update on my blouse order ${currentOrder.id}.`
-                )}`}
+                href={BUSINESS_CONFIG.getWhatsAppUrl(BUSINESS_CONFIG.messages.orderUpdate(currentOrder.id, isTamil))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-sm btn-outline-gold"

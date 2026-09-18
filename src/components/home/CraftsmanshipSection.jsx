@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import { Sparkles, Scissors, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function CraftsmanshipSection() {
@@ -37,7 +38,7 @@ export default function CraftsmanshipSection() {
             >
               <Scissors size={28} color="var(--color-gold)" />
               <div>
-                <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-gold-light)', lineHeight: 1.1 }}>15+ Years</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-gold-light)', lineHeight: 1.1 }}>{BUSINESS_CONFIG.experienceBadge}</div>
                 <div style={{ fontSize: '0.75rem', color: '#D4C9BC' }}>{isTamil ? 'கைவினைத் தையல் பாரம்பரியம்' : 'Artisanal Tailoring Mastery'}</div>
               </div>
             </div>
@@ -58,7 +59,7 @@ export default function CraftsmanshipSection() {
             </h2>
             <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, marginBottom: '24px', fontSize: '1rem' }}>
               {isTamil
-                ? 'ஒவ்வொரு மணப்பெண் பிளவுஸும் வெறும் ஆடை மட்டுமல்ல; அது பல தலைமுறைகளாக போற்றிப் பாதுகாக்கப்படும் கலைப்படைப்பு. மதுரையின் புகழ்பெற்ற ஆரி கலைஞர்கள் அசல் ஆன்டிக் ஜரி நூல்கள், கட் பீட்ஸ், குந்தன் மற்றும் பிரெஞ்ச் நாட் நுட்பங்களால் ஒவ்வொரு பிளவுஸையும் உருவாக்குகின்றனர்.'
+                ? 'ஒவ்வொரு மணப்பெண் பிளவுஸும் வெறும் ஆடை மட்டுமல்ல; அது பல தலைமுறைகளாக போற்றிப் பாதுகாக்கப்படும் கலைப்படைப்பு. எங்கள் கைவினைக் கலைஞர்கள் அசல் ஆன்டிக் ஜரி நூல்கள், கட் பீட்ஸ், குந்தன் மற்றும் பிரெஞ்ச் நாட் நுட்பங்களால் ஒவ்வொரு பிளவுஸையும் உருவாக்குகின்றனர்.'
                 : 'Every wedding blouse we stitch is more than apparel—it is a cherished bridal heirloom. Hand-stretched upon wooden khatiya frames, our master artisans weave thousands of microscopic knots using traditional wooden-handled tamboor needles with real copper-wound antique gold wires and luminous stones.'}
             </p>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useOrders } from '../../context/OrderContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import { Upload, Sparkles, CheckCircle, Calendar, MessageSquare, ShieldCheck } from 'lucide-react';
 
 export default function CustomQuoteForm({ onQuoteSubmitted }) {
@@ -91,11 +92,7 @@ export default function CustomQuoteForm({ onQuoteSubmitted }) {
               {isTamil ? 'மற்றொரு டிசைன் கேட்க' : 'Submit Another Request'}
             </button>
             <a
-              href={`https://wa.me/919876543210?text=${encodeURIComponent(
-                isTamil
-                  ? `வணக்கம், என் விருப்ப பிளவுஸ் விலை கோரிக்கை எண் ${generatedQuoteId} பற்றி பேச விரும்புகிறேன்.`
-                  : `Hello, I would like an estimate update on my custom blouse quote ${generatedQuoteId}.`
-              )}`}
+              href={BUSINESS_CONFIG.getWhatsAppUrl(BUSINESS_CONFIG.messages.customOrder(isTamil, generatedQuoteId))}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-gold"

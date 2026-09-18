@@ -17,6 +17,8 @@ import CategoryGrid from './components/home/CategoryGrid';
 import CraftsmanshipSection from './components/home/CraftsmanshipSection';
 import HowItWorks from './components/home/HowItWorks';
 import AboutPage from './components/home/AboutPage';
+import ContactPage from './components/home/ContactPage';
+import { BUSINESS_CONFIG } from './data/businessConfig';
 
 // Shop & Product Views
 import ShopView from './components/shop/ShopView';
@@ -167,7 +169,7 @@ function MainApp() {
                     <ArrowRight size={18} />
                   </button>
                   <a
-                    href="https://wa.me/919876543210"
+                    href={BUSINESS_CONFIG.getWhatsAppUrl(BUSINESS_CONFIG.messages.customOrder(isTamil))}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline btn-lg"
@@ -261,7 +263,12 @@ function MainApp() {
           />
         )}
 
-        {/* VIEW 12: ADMIN STUDIO */}
+        {/* VIEW 12: CONTACT US */}
+        {currentView === 'contact' && (
+          <ContactPage />
+        )}
+
+        {/* VIEW 13: ADMIN STUDIO */}
         {currentView === 'admin' && (
           <AdminDashboard />
         )}

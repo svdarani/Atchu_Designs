@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import { CheckCircle, Clock, Package, MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function OrderConfirmation({ order, onTrackOrder, onContinueShopping }) {
@@ -8,24 +9,23 @@ export default function OrderConfirmation({ order, onTrackOrder, onContinueShopp
   if (!order) return null;
 
   return (
-    <div className="container-narrow section-padding animate-fade-in">
-      <div className="card-premium" style={{ padding: 'var(--space-48)', textAlign: 'center' }}>
+    <div className="container section-padding animate-fade-in">
+      <div className="card-premium" style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center', padding: 'var(--space-48)' }}>
         {/* Success Icon */}
         <div
           style={{
-            width: 80,
-            height: 80,
-            borderRadius: '50%',
+            width: '72px',
+            height: '72px',
             background: 'var(--color-success-bg)',
-            color: 'var(--color-success)',
+            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 20px',
-            border: '2px solid rgba(30, 107, 66, 0.2)'
+            border: '2px solid var(--color-success)'
           }}
         >
-          <CheckCircle size={44} />
+          <CheckCircle size={38} color="var(--color-success)" />
         </div>
 
         <h1 style={{ fontSize: '2.2rem', color: 'var(--color-primary-dark)', marginBottom: '8px' }}>
@@ -34,7 +34,7 @@ export default function OrderConfirmation({ order, onTrackOrder, onContinueShopp
         <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', maxWidth: '520px', margin: '0 auto 20px' }}>
           {isTamil
             ? 'உங்கள் பிளவுஸ் தையல் மற்றும் ஆரி வேலைப்பாடு பதிவு செய்யப்பட்டுள்ளது. எங்கள் தலைமை டெய்லர் விரைவில் உங்கள் அளவுகளை சரிபார்ப்பார்.'
-            : 'Thank you for choosing Aatchu Couture. Your bespoke blouse order is now entering our artisanal tailoring queue.'}
+            : `Thank you for choosing ${BUSINESS_CONFIG.businessName}. Your bespoke blouse order is now entering our artisanal tailoring queue.`}
         </p>
 
         {/* Order Reference Badge */}
@@ -100,11 +100,7 @@ export default function OrderConfirmation({ order, onTrackOrder, onContinueShopp
           </button>
 
           <a
-            href={`https://wa.me/919876543210?text=${encodeURIComponent(
-              isTamil
-                ? `வணக்கம், நான் இப்போது பதிவு செய்த ஆர்டர் ${order.id} பற்றி பேச விரும்புகிறேன்.`
-                : `Hello! I just placed order ${order.id} and would like to connect with the master tailor.`
-            )}`}
+            href={BUSINESS_CONFIG.getWhatsAppUrl(BUSINESS_CONFIG.messages.orderUpdate(order.id, isTamil))}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-outline-gold btn-lg"

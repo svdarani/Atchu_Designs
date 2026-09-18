@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useShop } from '../../context/ShopContext';
 import { useAuth } from '../../context/AuthContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import LanguageSwitcher from './LanguageSwitcher';
 import {
   ShoppingBag,
@@ -9,9 +10,7 @@ import {
   Search,
   Menu,
   X,
-  Sparkles,
   Phone,
-  Scissors,
   ShieldCheck,
   UserCheck,
   Type
@@ -40,7 +39,8 @@ export default function Header({ currentView, setCurrentView }) {
     { id: 'aari', label: t('nav.aari') },
     { id: 'custom-quote', label: t('nav.customOrder') },
     { id: 'track-order', label: t('nav.trackOrder') },
-    { id: 'about', label: t('nav.about') }
+    { id: 'about', label: t('nav.about') },
+    { id: 'contact', label: t('nav.contact') }
   ];
 
   const handleNavClick = (viewId) => {
@@ -58,13 +58,12 @@ export default function Header({ currentView, setCurrentView }) {
             <span>{t('announcement.text')}</span>
           </div>
           <a
-            href="https://wa.me/919876543210"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={BUSINESS_CONFIG.telLink}
             className="announcement-contact"
+            title="Call Atchu Designs"
           >
             <Phone size={13} />
-            <span>+91 98765 43210</span>
+            <span>{BUSINESS_CONFIG.phone}</span>
           </a>
         </div>
       </div>
@@ -77,19 +76,20 @@ export default function Header({ currentView, setCurrentView }) {
             <div
               className="brand-logo"
               onClick={() => handleNavClick('home')}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              title="Atchu Designs - Stiching and Aari works"
             >
-              <div className="brand-emblem">
-                <Scissors size={22} />
-              </div>
-              <div className="brand-text-col">
-                <span className="brand-name">
-                  {isTamil ? 'ஆச்சு' : 'AATCHU'}
-                </span>
-                <span className="brand-tagline">
-                  {isTamil ? 'மணப்பெண் பிளவுஸ் & ஆரி' : 'BRIDAL COUTURE & AARI'}
-                </span>
-              </div>
+              <img
+                src={BUSINESS_CONFIG.logoUrl}
+                alt="Atchu Designs - Stiching and Aari works"
+                style={{
+                  height: '46px',
+                  width: 'auto',
+                  maxWidth: '185px',
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+              />
             </div>
 
             {/* Center: Desktop Navigation Links */}
@@ -265,15 +265,25 @@ export default function Header({ currentView, setCurrentView }) {
             className="animate-fade-in"
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div className="brand-logo">
-                <div className="brand-emblem" style={{ width: 36, height: 36 }}>
-                  <Scissors size={18} />
-                </div>
-                <span className="brand-name" style={{ fontSize: '1.2rem' }}>
-                  {isTamil ? 'ஆச்சு' : 'AATCHU'}
-                </span>
+              <div
+                className="brand-logo"
+                onClick={() => handleNavClick('home')}
+                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                title="Atchu Designs - Stiching and Aari works"
+              >
+                <img
+                  src={BUSINESS_CONFIG.logoUrl}
+                  alt="Atchu Designs - Stiching and Aari works"
+                  style={{
+                    height: '38px',
+                    width: 'auto',
+                    maxWidth: '145px',
+                    objectFit: 'contain',
+                    display: 'block'
+                  }}
+                />
               </div>
-              <button onClick={() => setMobileMenuOpen(false)}>
+              <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
                 <X size={20} />
               </button>
             </div>

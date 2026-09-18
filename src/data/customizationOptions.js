@@ -1,3 +1,5 @@
+import { BUSINESS_CONFIG } from './businessConfig';
+
 export const NECK_STYLES = [
   { id: 'same_as_model', name_en: 'Same as Model', name_ta: 'படத்திலுள்ள அதே வடிவம்', price: 0, tag: 'Standard' },
   { id: 'round_neck', name_en: 'Classic Round Neck', name_ta: 'வட்டக் கழுத்து (Round Neck)', price: 0, tag: 'Popular' },
@@ -80,7 +82,7 @@ export const DEFAULT_CONFIG = {
   taxRate: 0.05,
   shippingCost: 0, // Free shipping
   expressRushFee: 650,
-  whatsappNumber: '+919876543210',
-  shopAddress: 'No. 42, Temple Ring Road, Near Sri Meenakshi Temple, Madurai, Tamil Nadu 625001',
-  supportEmail: 'contact@aatchucouture.in'
+  whatsappNumber: BUSINESS_CONFIG.phoneRaw,
+  shopAddress: BUSINESS_CONFIG.address,
+  supportEmail: BUSINESS_CONFIG.email
 };

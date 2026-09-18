@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useShop } from '../../context/ShopContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import ProductGallery from './ProductGallery';
 import CustomizerForm from './CustomizerForm';
 import MeasurementModal from './MeasurementModal';
@@ -28,24 +29,32 @@ export default function ProductDetailView({ product, onBack, onAddToCartSuccess 
 
   const isFavorited = isInWishlist(product.id);
 
-  // When customer completes customization form and clicks "Proceed to Measurements"
-  const handleProceedToMeasurements = (customizationData, calculatedPrice) => {
-    setPendingCustomization(customizationData);
-    setPendingPrice(calculatedPrice);
+  const handleCustomizationChange = (customization, updatedPrice) => {
+    setPendingCustomization(customization);
+    setPendingPrice(updatedPrice);
+  };
+
+  const handleOpenMeasurementModal = () => {
     setMeasurementModalOpen(true);
   };
 
   // When customer confirms measurements in modal
   const handleSaveMeasurements = (measurementData) => {
+    setMeasurementModalOpen(false);
     addToCart(product, pendingCustomization, measurementData, pendingPrice, 1);
     if (onAddToCartSuccess) onAddToCartSuccess();
+  };
+
+  const handleWhatsAppOrder = () => {
+    const text = BUSINESS_CONFIG.messages.productOrder(product, pendingCustomization, isTamil);
+    window.open(BUSINESS_CONFIG.getWhatsAppUrl(text), '_blank');
   };
 
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
       isTamil
-        ? `ஆச்சு கௌடூரில் இந்த அழகிய மணப்பெண் பிளவுஸைப் பாருங்கள்: ${product.name_ta} - ₹${product.startingPrice} முதல்`
-        : `Check out this handcrafted bridal blouse at Aatchu Couture: ${product.name_en} - starting from ₹${product.startingPrice}`
+        ? `${BUSINESS_CONFIG.businessName}-ல் இந்த அழகிய பிளவுஸைப் பாருங்கள்: ${product.name_ta || product.name_en} - ₹${product.startingPrice} முதல்`
+        : `Check out this handcrafted blouse at ${BUSINESS_CONFIG.businessName}: ${product.name_en} - starting from ₹${product.startingPrice}`
     );
     window.open(`https://wa.me/?text=${text}`, '_blank');
   };
@@ -71,12 +80,13 @@ export default function ProductDetailView({ product, onBack, onAddToCartSuccess 
 
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button
-            onClick={handleShareWhatsApp}
+            onClick={handleWhatsAppOrder}
             className="btn btn-sm btn-outline-gold"
-            title={t('product.shareWhatsApp')}
+            title="Order or Inquire via WhatsApp"
+            style={{ gap: '6px' }}
           >
-            <MessageCircle size={14} color="#25D366" />
-            <span>{isTamil ? 'பகிர்க' : 'Share'}</span>
+            <MessageCircle size={15} color="#25D366" />
+            <span>{isTamil ? 'வாட்ஸ்அப் ஆர்டர்' : 'WhatsApp Order'}</span>
           </button>
           <button
             onClick={handleCopyLink}

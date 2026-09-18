@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useShop } from '../../context/ShopContext';
 import { useOrders } from '../../context/OrderContext';
+import { BUSINESS_CONFIG } from '../../data/businessConfig';
 import {
   User,
   Ruler,
@@ -418,8 +419,13 @@ export default function CheckoutStepper({ onOrderSuccess }) {
             {formData.paymentMethod === 'offline_upi_transfer' && (
               <div style={{ background: '#FAF6F0', padding: '16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border-gold)', marginBottom: '24px' }}>
                 <div style={{ marginBottom: '12px', fontSize: '0.86rem' }}>
-                  <div><strong>{isTamil ? 'கடை UPI ஐடி:' : 'Boutique UPI ID:'}</strong> <code style={{ background: '#FFFFFF', padding: '2px 6px', borderRadius: 4, color: 'var(--color-primary)' }}>aatchucouture@oksbi</code></div>
-                  <div style={{ marginTop: 4 }}><strong>{isTamil ? 'ஜிபே / போன்பே எண்:' : 'GPay / PhonePe Mobile:'}</strong> +91 98765 43210</div>
+                  <div><strong>{isTamil ? 'கடை UPI ஐடி:' : 'Boutique UPI ID:'}</strong> <code style={{ background: '#FFFFFF', padding: '2px 6px', borderRadius: 4, color: 'var(--color-primary)' }}>{BUSINESS_CONFIG.upiId}</code></div>
+                  <div style={{ marginTop: 4 }}>
+                    <strong>{isTamil ? 'ஜிபே / போன்பே எண்:' : 'GPay / PhonePe Mobile:'}</strong>{' '}
+                    <a href={BUSINESS_CONFIG.telLink} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none' }}>
+                      {BUSINESS_CONFIG.phone}
+                    </a>
+                  </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>

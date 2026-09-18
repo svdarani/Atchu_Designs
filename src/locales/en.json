@@ -1,7 +1,7 @@
 {
   "brand": {
-    "name": "Aatchu Couture",
-    "subtitle": "Bridal Blouse & Aari Artistry",
+    "name": "Atchu Designs",
+    "subtitle": "Stiching and Aari works",
     "tagline": "Handcrafted • Custom Stitched • Made for You"
   },
   "nav": {
@@ -12,6 +12,7 @@
     "customOrder": "Custom Design Quote",
     "trackOrder": "Track Order",
     "about": "Our Craft",
+    "contact": "Contact",
     "account": "My Account",
     "admin": "Admin Studio",
     "cart": "Cart",
@@ -212,7 +213,7 @@
     }
   },
   "admin": {
-    "title": "Aatchu Studio Admin Console",
+    "title": "Atchu Designs Admin Studio",
     "tabs": {
       "overview": "Dashboard",
       "orders": "Orders & Production",
@@ -244,6 +245,6 @@
     "loading": "Loading...",
     "success": "Success",
     "contactTailor": "Speak with Boutique Tailor",
-    "whatsappQuery": "Hello! I would like to inquire about blouse stitching and Aari work at Aatchu Couture."
+    "whatsappQuery": "Hi Atchu Designs, I would like to place an order for a blouse."
   }
 }

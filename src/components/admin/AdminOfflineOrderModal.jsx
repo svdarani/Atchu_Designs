@@ -62,8 +62,8 @@ export default function AdminOfflineOrderModal({ isOpen, onClose, onOrderCreated
       customer: {
         name: customerName,
         phone,
-        email: email || 'walkin@store.aatchucouture.in',
-        address: 'Direct Walk-in Store Pickup (Madurai Atelier)'
+        email: email || 'walkin@store.atchudesigns.in',
+        address: 'Direct Walk-in Store Pickup (Atchu Designs - Thottiyam)'
       },
       items: [
         {
