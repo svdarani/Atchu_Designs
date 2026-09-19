@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useShop } from '../../context/ShopContext';
 import { BUSINESS_CONFIG } from '../../data/businessConfig';
@@ -17,21 +17,34 @@ import {
   ArrowLeft
 } from 'lucide-react';
 
-export default function ProductDetailView({ product, onBack, onAddToCartSuccess }) {
+export default function ProductDetailView({ product, onBack, onAddToCartSuccess, initialTab = 'customizer' }) {
   const { isTamil, t } = useLanguage();
   const { addToCart, isInWishlist, toggleWishlist } = useShop();
 
-  const [activeTab, setActiveTab] = useState('customizer'); // 'customizer' | 'specs' | 'care'
+  const [activeTab, setActiveTab] = useState(initialTab || 'customizer'); // 'customizer' | 'specs' | 'care'
   const [measurementModalOpen, setMeasurementModalOpen] = useState(false);
   const [pendingCustomization, setPendingCustomization] = useState(null);
-  const [pendingPrice, setPendingPrice] = useState(product.startingPrice);
+  const [pendingPrice, setPendingPrice] = useState(product?.startingPrice || 0);
   const [linkCopied, setLinkCopied] = useState(false);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, product]);
 
   const isFavorited = isInWishlist(product.id);
 
   const handleCustomizationChange = (customization, updatedPrice) => {
     setPendingCustomization(customization);
     setPendingPrice(updatedPrice);
+  };
+
+  // When customer completes customization form and clicks "Proceed to Measurements"
+  const handleProceedToMeasurements = (customizationData, calculatedPrice) => {
+    setPendingCustomization(customizationData);
+    setPendingPrice(calculatedPrice);
+    setMeasurementModalOpen(true);
   };
 
   const handleOpenMeasurementModal = () => {

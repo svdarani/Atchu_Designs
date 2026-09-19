@@ -53,6 +53,7 @@ function MainApp() {
   // Navigation State
   const [currentView, setCurrentView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [initialProductTab, setInitialProductTab] = useState('customizer');
   const [confirmedOrder, setConfirmedOrder] = useState(null);
   const [trackingOrderId, setTrackingOrderId] = useState('');
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
@@ -86,8 +87,15 @@ function MainApp() {
   }, [currentView, isAuthenticated, setAuthRedirect]);
 
   // Handle Product Detail Selection
-  const handleOpenProduct = (product) => {
+  const handleOpenProduct = (product, tab = 'specs') => {
     setSelectedProduct(product);
+    setInitialProductTab(tab);
+    setCurrentView('product-detail');
+  };
+
+  const handleQuickCustomize = (product) => {
+    setSelectedProduct(product);
+    setInitialProductTab('customizer');
     setCurrentView('product-detail');
   };
 
@@ -110,6 +118,7 @@ function MainApp() {
         setCurrentView={(view) => {
           if (view === 'product-detail' && !selectedProduct) {
             setSelectedProduct(products[0]);
+            setInitialProductTab('customizer');
           }
           setCurrentView(view);
         }}
@@ -183,6 +192,7 @@ function MainApp() {
                       key={product.id}
                       product={product}
                       onSelectProduct={handleOpenProduct}
+                      onQuickCustomize={handleQuickCustomize}
                     />
                   ))}
                 </div>
@@ -273,9 +283,10 @@ function MainApp() {
         )}
 
         {/* VIEW 5: PRODUCT DETAIL & CUSTOMIZER */}
-        {currentView === 'product-detail' && selectedProduct && (
+        {currentView === 'product-detail' && (selectedProduct || products[0]) && (
           <ProductDetailView
-            product={selectedProduct}
+            product={selectedProduct || products[0]}
+            initialTab={initialProductTab}
             onBack={() => setCurrentView('shop')}
             onAddToCartSuccess={() => setIsCartOpen(true)}
           />

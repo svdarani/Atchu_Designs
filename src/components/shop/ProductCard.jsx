@@ -14,7 +14,7 @@ export default function ProductCard({ product, onSelectProduct, onQuickCustomize
       {/* Media Image Container */}
       <div
         className="product-media"
-        onClick={() => onSelectProduct(product)}
+        onClick={() => onSelectProduct && onSelectProduct(product, 'specs')}
         style={{ cursor: 'pointer' }}
       >
         <img
@@ -53,7 +53,7 @@ export default function ProductCard({ product, onSelectProduct, onQuickCustomize
 
         <h3
           className="product-name"
-          onClick={() => onSelectProduct(product)}
+          onClick={() => onSelectProduct && onSelectProduct(product, 'specs')}
           style={{ cursor: 'pointer' }}
         >
           {isTamil ? product.name_ta : product.name_en}
@@ -73,7 +73,7 @@ export default function ProductCard({ product, onSelectProduct, onQuickCustomize
         {/* Action Buttons */}
         <div className="product-card-actions">
           <button
-            onClick={() => onSelectProduct(product)}
+            onClick={() => onSelectProduct && onSelectProduct(product, 'specs')}
             className="btn btn-sm btn-outline"
             style={{ fontSize: '0.8rem', padding: '7px 8px' }}
           >
@@ -81,7 +81,13 @@ export default function ProductCard({ product, onSelectProduct, onQuickCustomize
             <span>{t('shop.viewDetails')}</span>
           </button>
           <button
-            onClick={() => onQuickCustomize(product)}
+            onClick={() => {
+              if (onQuickCustomize) {
+                onQuickCustomize(product, 'customizer');
+              } else if (onSelectProduct) {
+                onSelectProduct(product, 'customizer');
+              }
+            }}
             className="btn btn-sm btn-primary"
             style={{ fontSize: '0.8rem', padding: '7px 8px' }}
           >
