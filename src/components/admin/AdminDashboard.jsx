@@ -242,13 +242,23 @@ export default function AdminDashboard() {
                       <td>
                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                           <button
-                            onClick={() => handleAdvanceStatus(ord.id, ord.productionStatus)}
+                            onClick={() => handleAdvanceStatus(ord.id, ord.productionStatus || ord.stage)}
                             className="btn btn-sm btn-outline-gold"
                             title="Advance to next production milestone"
                           >
                             <span>Next Stage</span>
                             <ChevronRight size={14} />
                           </button>
+                          <a
+                            href={BUSINESS_CONFIG.getWhatsAppUrl(`Hi, this is Atchu Designs regarding your order ${ord.id}.`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-sm btn-outline"
+                            title="Contact Customer on WhatsApp"
+                            style={{ color: '#059669', borderColor: '#A7F3D0' }}
+                          >
+                            <MessageCircle size={14} />
+                          </a>
                           {ord.items[0]?.measurements && (
                             <button
                               onClick={() => setSelectedMeasurementsView(ord)}

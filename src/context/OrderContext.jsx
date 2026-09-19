@@ -3,16 +3,19 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const OrderContext = createContext();
 
 export const ORDER_STAGES = [
-  { id: 'order_placed', order: 1 },
-  { id: 'payment_confirmed', order: 2 },
-  { id: 'measurement_verified', order: 3 },
-  { id: 'stitching_started', order: 4 },
-  { id: 'aari_work', order: 5 },
-  { id: 'finishing', order: 6 },
-  { id: 'quality_check', order: 7 },
-  { id: 'ready', order: 8 },
-  { id: 'shipped', order: 9 },
-  { id: 'delivered', order: 10 }
+  { id: 'order_created', order: 1, label_en: 'Order Created', label_ta: 'ஆர்டர் பதிவு செய்யப்பட்டது' },
+  { id: 'payment_pending', order: 2, label_en: 'Payment Pending', label_ta: 'பணம் செலுத்த காத்திருக்கிறது' },
+  { id: 'payment_confirmed', order: 3, label_en: 'Payment Confirmed', label_ta: 'பணம் உறுதி செய்யப்பட்டது' },
+  { id: 'order_review', order: 4, label_en: 'Order Review', label_ta: 'ஆர்டர் மறுபரிசீலனை' },
+  { id: 'approved', order: 5, label_en: 'Approved', label_ta: 'அனுமதிக்கப்பட்டது' },
+  { id: 'stitching_started', order: 6, label_en: 'Stitching Started', label_ta: 'தையல் வேலை துவங்கியது' },
+  { id: 'aari_work', order: 7, label_en: 'Aari Work', label_ta: 'ஆரி வேலைப்பாடு' },
+  { id: 'quality_check', order: 8, label_en: 'Quality Check', label_ta: 'தரப் பரிசோதனை' },
+  { id: 'ready', order: 9, label_en: 'Ready', label_ta: 'தயாராகிவிட்டது' },
+  { id: 'shipped', order: 10, label_en: 'Shipped', label_ta: 'அனுப்பப்பட்டது' },
+  { id: 'out_for_delivery', order: 11, label_en: 'Out for Delivery', label_ta: 'டெலிவரிக்கு வந்துள்ளது' },
+  { id: 'delivered', order: 12, label_en: 'Delivered', label_ta: 'டெலிவரி செய்யப்பட்டது' },
+  { id: 'completed', order: 13, label_en: 'Completed', label_ta: 'நிறைவடைந்தது' }
 ];
 
 const SEED_ORDERS = [
@@ -269,10 +272,26 @@ export function OrderProvider({ children }) {
   };
 
   // Update production status
-  const updateOrderStatus = (orderId, newStatus) => {
+  const updateOrderStatus = async (orderId, newStatus, notes = '') => {
     setOrders((prev) =>
-      prev.map((ord) => (ord.id === orderId ? { ...ord, productionStatus: newStatus } : ord))
+      prev.map((ord) => (ord.id === orderId ? { ...ord, productionStatus: newStatus, stage: newStatus } : ord))
     );
+
+    try {
+      const token = localStorage.getItem('atchu_token');
+      if (token) {
+        await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ stage: newStatus, notes })
+        });
+      }
+    } catch (e) {
+      console.warn('API sync for status update skipped', e);
+    }
   };
 
   // Verify payment proof
